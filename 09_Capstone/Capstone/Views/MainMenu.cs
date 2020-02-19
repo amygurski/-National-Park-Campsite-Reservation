@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Capstone.DAL;
+using Capstone.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Capstone.Views
@@ -9,24 +11,34 @@ namespace Capstone.Views
     public class MainMenu : CLIMenu
     {
         // DAOs - Interfaces to our data objects can be stored here...
-        //protected ICityDAO cityDAO;
+        protected IParkSqlDAO parkSqlDAO;
         //protected ICountryDAO countryDAO;
 
         /// <summary>
         /// Constructor adds items to the top-level menu. YOu will likely have parameters for one or more DAO's here...
         /// </summary>
-        public MainMenu(/***ICityDAO cityDAO, ICountryDAO countryDAO***/) : base("Main Menu")
+        public MainMenu(IParkSqlDAO parkSqlDAO) : base("Main Menu")
         {
-            //this.cityDAO = cityDAO;
+            this.parkSqlDAO = parkSqlDAO;
             //this.countryDAO = countryDAO;
         }
 
+        string selection = null;
+
         protected override void SetMenuOptions()
         {
-            this.menuOptions.Add("1", "Add 2 integers");
-            this.menuOptions.Add("2", "Menu option 2");
-            this.menuOptions.Add("3", "Go to a sub-menu");
-            this.menuOptions.Add("Q", "Quit program");
+            List<Park> parks = parkSqlDAO.GetParks();
+
+            Console.WriteLine($"Select a Park for Further Details: ");
+
+            foreach (Park park in parks)
+            {
+                Console.WriteLine($" {park.Id}. {park.Name}");
+            }
+            Console.WriteLine($"Please enter selection here: ");
+            string selection = Console.ReadLine();
+            
+            
         }
 
         /// <summary>
@@ -35,9 +47,11 @@ namespace Capstone.Views
         /// </summary>
         /// <param name="choice">"Key" of the user's menu selection</param>
         /// <returns></returns>
-        protected override bool ExecuteSelection(string choice)
+        protected override bool ExecuteSelection(string selection)
         {
-            switch (choice)
+            
+
+            switch (selection)
             {
                 case "1": // Do whatever option 1 is
                     int i1 = GetInteger("Enter the first integer: ");

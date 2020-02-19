@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone.DAL;
+
 
 namespace Capstone.Models
 {
@@ -13,6 +15,8 @@ namespace Capstone.Models
         public int Area { get; set; }
         public int AnnualVisitors { get; set; }
         public string Description { get; set; }
+        public object ParksSqlDAO { get; private set; }
+
         //public Park (int id, string name, string location, int establishDate, double area, int annualVisitors, string description)
         //{
         //    Id = id;
@@ -24,21 +28,6 @@ namespace Capstone.Models
         //    Description = description;
         //}
 
-        public void ViewParks()
-        {
-            List<Park> parks = ParksSqlDAO.GetParks();
-
-                Console.WriteLine($"Select a Park for Further Details: ");
-
-            foreach (Park park in parks)
-            {
-                Console.WriteLine($" {park.Id}. {park.Name}");
-            }
-            Console.WriteLine($"Please enter selection here: ");
-                string response = Console.ReadLine();
-                int selection = int.Parse(response);
-
-
-        }
+ 
     }
 }
