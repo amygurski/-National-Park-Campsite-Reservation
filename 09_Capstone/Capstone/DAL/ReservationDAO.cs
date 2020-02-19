@@ -57,9 +57,18 @@ namespace Capstone.DAL
                 SiteId = Convert.ToInt32(rdr["campground_id"]),
                 Name = Convert.ToString(rdr["name"]),
                 FromDate = Convert.ToDateTime(rdr["from_date"]),
-                ToDate = Convert.ToDateTime(rdr["to_date"]),
-                CreateDate = Convert.ToDateTime(rdr["create_date"])
+                ToDate = Convert.ToDateTime(rdr["to_date"])
             };
+
+            //Create date can be null
+            if (rdr["create_date"] is DBNull)
+            {
+                reservation.CreateDate = null;
+            }
+            else
+            {
+                reservation.CreateDate = Convert.ToDateTime(rdr["create_date"]);
+            }
 
             return reservation;
         }
