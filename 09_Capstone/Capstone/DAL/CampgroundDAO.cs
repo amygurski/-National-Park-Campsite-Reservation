@@ -6,28 +6,27 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    public class ParkSqlDAO : IParkSqlDAO
+    public class CampgroundDAO : ICampgroundDAO
     {
         private string connectionString;
 
-        public ParkSqlDAO(string connString)
+        public CampgroundDAO(string connString)
         {
             this.connectionString = connString;
         }
 
-        public List<Park> GetParks()
+        public List<Campground> GetCampgrounds()
         {
-            List<Park> list = new List<Park>();
+            List<Campground> list = new List<Campground>();
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-
                     conn.Open();
 
                     // Create the command for the sql statement
-                    string sql = "Select * from park";
+                    string sql = "Select * from campground";
                     SqlCommand cmd = new SqlCommand(sql, conn);
 
                     // Execute the query and get the result set in a reader
@@ -35,7 +34,7 @@ namespace Capstone.DAL
 
                     // For each row, create a new country and add it to the list
                     while (rdr.Read())
-                    { 
+                    {
                         list.Add(RowToObject(rdr));
                     }
 
@@ -43,27 +42,26 @@ namespace Capstone.DAL
             }
             catch (SqlException ex)
             {
-                // TODO: Catch ParkDAO Exceptions
+                // TODO: Catch CampgroundDAO Exceptions
             }
 
             return list;
         }
 
-        private static Park RowToObject(SqlDataReader rdr)
+        private static Campground RowToObject(SqlDataReader rdr)
         {
-            Park park = new Park()
+
+            Campground campground = new Campground()
             {
-                Id = Convert.ToInt32(rdr["park_id"]),
+                Id = Convert.ToInt32(rdr["campground_id"]),
+                ParkId = Convert.ToInt32(rdr["park_id"]),
                 Name = Convert.ToString(rdr["name"]),
-                Location = Convert.ToString(rdr["location"]),
-                EstablishDate = Convert.ToDateTime(rdr["establish_date"]),
-                Area = Convert.ToInt32(rdr["area"]),
-                AnnualVisitors = Convert.ToInt32(rdr["visitors"]),
-                Description = Convert.ToString(rdr["description"])
+                OpenMonths = Convert.ToInt32(rdr["open_from_mm"]),
+                ClosedMonths = Convert.ToInt32(rdr["open_to_mm"]),
+                DailyFee = Convert.ToDecimal(rdr["daily_fee_mm"])
             };
 
-            return park;
+            return campground;
         }
-
     }
 }
