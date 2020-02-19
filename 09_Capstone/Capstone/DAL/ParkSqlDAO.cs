@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    public class ParkSqlDAO
+    public class ParkSqlDAO : IParkSqlDAO
     {
         private string connectionString;
 
@@ -54,14 +54,6 @@ namespace Capstone.DAL
 
         private static Park RowToObject(SqlDataReader rdr)
         {
-            //    public int Id { get; set; }
-            //public string Name { get; set; }
-            //public string Location { get; set; }
-            //public int EstablishDate { get; set; }
-            //public double Area { get; set; }
-            //public int AnnualVisitors { get; set; }
-            //public string Description { get; set; }
-
             Park park = new Park()
             {
                 Id = Convert.ToInt32(rdr["park_id"]),
