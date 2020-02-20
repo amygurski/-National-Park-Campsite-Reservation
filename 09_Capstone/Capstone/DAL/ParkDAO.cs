@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    public class ParkSqlDAO : IParkSqlDAO
+    public class ParkDAO : IParkDAO
     {
         private string connectionString;
 
-        public ParkSqlDAO(string connString)
+        public ParkDAO(string connString)
         {
             this.connectionString = connString;
         }

@@ -11,16 +11,16 @@ namespace Capstone.Views
     public class MainMenu : CLIMenu
     {
         // DAOs - Interfaces to our data objects can be stored here...
-        protected IParkSqlDAO parkSqlDAO;
+        protected IParkDAO parkDAO;
         private string Selection = null;
 
 
         /// <summary>
         /// Constructor adds items to the top-level menu. YOu will likely have parameters for one or more DAO's here...
         /// </summary>
-        public MainMenu(IParkSqlDAO parkSqlDAO) : base("Main Menu")
+        public MainMenu(IParkDAO parkDAO) : base("Main Menu")
         {
-            this.parkSqlDAO = parkSqlDAO;
+            this.parkDAO = parkDAO;
 
         }
 
@@ -29,7 +29,7 @@ namespace Capstone.Views
         protected override void SetMenuOptions()
         {
 
-            List<Park> parks = parkSqlDAO.GetParks();
+            List<Park> parks = parkDAO.GetParks();
 
             Console.WriteLine($"Select a Park for Further Details: ");
 
@@ -78,7 +78,7 @@ namespace Capstone.Views
         /// <returns></returns>
         protected override bool ExecuteSelection(string Selection)
         {
-            List<Park> parks = parkSqlDAO.GetParks();
+            List<Park> parks = parkDAO.GetParks();
             int parkId = 0;
             parkId = int.Parse(Selection);
 
@@ -94,7 +94,7 @@ namespace Capstone.Views
                 }
             }
 
-            ParkInfoMenu sm = new ParkInfoMenu(parkSqlDAO, park);
+            ParkInfoMenu sm = new ParkInfoMenu(parkDAO, park);
             sm.Run();
 
             //switch (parkId)
@@ -102,19 +102,19 @@ namespace Capstone.Views
 
             //    case 1: // Do whatever option 1 is
             //        Console.Clear();   
-            //        ParkInfoMenu sm = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        ParkInfoMenu sm = new ParkInfoMenu(parklDAO, parks[parkId - 1]);
             //        sm.Run();
             //        Pause("Press enter to continue");
             //        return true;    // Keep running the main menu
             //    case 2: // Do whatever option 2 is
             //        Console.Clear();
-            //        ParkInfoMenu sm1 = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        ParkInfoMenu sm1 = new ParkInfoMenu(parkDAO, parks[parkId - 1]);
             //        sm1.Run();
             //        Pause("Press enter to continue");
             //        return true;    // Keep running the main menu
             //    case 3: // Create and show the sub-menu
             //        Console.Clear();
-            //        ParkInfoMenu sm2 = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        ParkInfoMenu sm2 = new ParkInfoMenu(parkDAO, parks[parkId - 1]);
             //        sm2.Run();
             //        Pause("Press enter to continue");
             //        return true;    // Keep running the main menu

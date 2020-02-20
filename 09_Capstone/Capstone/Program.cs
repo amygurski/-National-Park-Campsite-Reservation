@@ -24,7 +24,7 @@ namespace Capstone
             *********************************************************************/
             // Create any DAOs needed here, and then pass them into main menu...
 
-            IParkSqlDAO parkDAO = new ParkSqlDAO(connectionString);
+            IParkDAO parkDAO = new ParkDAO(connectionString);
 
             MainMenu mainMenu = new MainMenu(parkDAO);  // You'll probably be adding daos to the constructor
 
