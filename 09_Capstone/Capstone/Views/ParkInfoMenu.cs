@@ -12,14 +12,14 @@ namespace Capstone.Views
     {
         // Store any private variables, including DAOs here....
         private string Selection = null;
-        protected IParkSqlDAO parkSqlDAO;
+        protected IParkDAO parkSqlDAO;
         private string connectionString;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public ParkInfoMenu(IParkSqlDAO parkSqlDAO, Park park) :
+        public ParkInfoMenu(IParkDAO parkSqlDAO, Park park) :
             base("ParkInfoMenu")
         {
             this.parkSqlDAO = parkSqlDAO;
