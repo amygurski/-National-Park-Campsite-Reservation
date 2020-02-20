@@ -21,7 +21,7 @@ namespace Capstone.Views
         /// Constructor adds items to the top-level menu
         /// </summary>
         public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, Park park) :
-            base("ParkInfoMenu")
+            base("CamgroundMenu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
@@ -30,10 +30,9 @@ namespace Capstone.Views
 
         protected override void SetMenuOptions()
         {
-            this.menuOptions.Add("1", "View Campgrounds");
-            this.menuOptions.Add("2", "Search for Reservation");
-            this.menuOptions.Add("B", "Back to Main Menu");
-            this.quitKey = "B";
+            this.menuOptions.Add("1", "Search for Available Reservations");
+            this.menuOptions.Add("2", "Return to Previous Screen");
+            this.quitKey = "2";
         }
 
         /// <summary>
@@ -47,14 +46,23 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
-                    CampgroundDAO cg = new CampgroundDAO(connectionString);
-                    cg.GetCampgrounds(); 
-                    Pause("");
-                    return true;
-                case "2": // Do whatever option 2 is
+                    Console.WriteLine("Which campground (enter 0 to cancel): ");
+                    string response =  Console.ReadLine();
+                    int campground = int.Parse(response);
                     
-                    Pause("");
-                    return false;
+                    Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
+                    string arrival = Console.ReadLine();
+                    DateTime arrivalDate = DateTime.Parse(arrival);
+
+                    Console.WriteLine("What is the departure date? (MM/DD/YYYY): ");
+                    string departure = Console.ReadLine();
+                    DateTime departureDate = DateTime.Parse(departure);
+
+                    ReservationDAO rv = new ReservationDAO(connectionString);
+                    rv.IsReservationAvailable(campground, arrivalDate, departureDate);
+
+                    return true;
+                
             }
             return true;
         }
@@ -88,9 +96,9 @@ namespace Capstone.Views
 
         public void PrintHeader(Park park)
         {
-            //int parkId = int.Parse(Selection);
-            //ParkSqlDAO pk = new ParkSqlDAO(connectionString);
-            // List<Park> parks = .GetParks();
+            CampgroundDAO cg = new CampgroundDAO(connectionString);
+            cg.GetCampgrounds();
+
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"{park.Name}"));
             Console.WriteLine($"Location:       {park.Location}");

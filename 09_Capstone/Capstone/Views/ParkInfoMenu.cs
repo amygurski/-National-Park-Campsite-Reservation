@@ -89,9 +89,7 @@ namespace Capstone.Views
 
         public void PrintHeader(Park park)
         {
-            //int parkId = int.Parse(Selection);
-            //ParkSqlDAO pk = new ParkSqlDAO(connectionString);
-            // List<Park> parks = .GetParks();
+            
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"{park.Name}"));
             Console.WriteLine($"Location:       {park.Location}");

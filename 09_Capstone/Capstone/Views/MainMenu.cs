@@ -13,16 +13,18 @@ namespace Capstone.Views
         // DAOs - Interfaces to our data objects can be stored here...
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
+        protected IReservationDAO reservationDAO;
         private string Selection = null;
 
 
         /// <summary>
         /// Constructor adds items to the top-level menu. YOu will likely have parameters for one or more DAO's here...
         /// </summary>
-        public MainMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO) : base("Main Menu")
+        public MainMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO) : base("Main Menu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
+            this.reservationDAO = reservationDAO;
         }
 
 
