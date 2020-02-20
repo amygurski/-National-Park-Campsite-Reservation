@@ -8,25 +8,23 @@ namespace Capstone.Views
     /// <summary>
     /// The top-level menu in our Market Application
     /// </summary>
-    public class ParkInfoMenu : CLIMenu
+    public class CampgroundMenu : CLIMenu
     {
         // Store any private variables, including DAOs here....
         
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
-        protected IReservationDAO reservationDAO;
         private string connectionString;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public ParkInfoMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, Park park) :
+        public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, Park park) :
             base("ParkInfoMenu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
-            this.reservationDAO = reservationDAO;
             this.park = park;
         }
 
@@ -50,11 +48,12 @@ namespace Capstone.Views
             {
                 case "1": // Do whatever option 1 is
                     CampgroundDAO cg = new CampgroundDAO(connectionString);
-                    cg.GetCampgrounds();                     
+                    cg.GetCampgrounds(); 
+                    Pause("");
                     return true;
                 case "2": // Do whatever option 2 is
-                    ReservationDAO rv = new ReservationDAO(connectionString);
-                    rv.GetReservations();
+                    
+                    Pause("");
                     return false;
             }
             return true;

@@ -25,8 +25,9 @@ namespace Capstone
             // Create any DAOs needed here, and then pass them into main menu...
 
             IParkDAO parkDAO = new ParkDAO(connectionString);
+            ICampgroundDAO campgroundDAO = new CampgroundDAO(connectionString);
 
-            MainMenu mainMenu = new MainMenu(parkDAO);  // You'll probably be adding daos to the constructor
+            MainMenu mainMenu = new MainMenu(parkDAO, campgroundDAO);  // You'll probably be adding daos to the constructor
 
             // Run the menu.
             mainMenu.Run();
