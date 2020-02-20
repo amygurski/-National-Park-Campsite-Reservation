@@ -23,7 +23,8 @@ namespace Capstone.Views
             //this.countryDAO = countryDAO;
         }
 
-        string selection = null;
+        private string Selection = null;
+        //private int ParkId = 0;
 
         protected override void SetMenuOptions()
         {
@@ -36,8 +37,21 @@ namespace Capstone.Views
                 Console.WriteLine($" {park.Id}. {park.Name}");
             }
             Console.WriteLine($"Please enter selection here: ");
-            string selection = Console.ReadLine();
-            
+            Selection = Console.ReadLine();
+            int parkId = int.Parse(Selection);
+
+            if (parkId > parks.Count || parkId < 1)
+            {
+                Console.WriteLine($"Please enter valid selection:");
+                Selection = Console.ReadLine();
+                int parkId1 = int.Parse(Selection);
+            }
+            else
+            {
+            ExecuteSelection(Selection);
+
+            }
+
             
         }
 
@@ -47,25 +61,36 @@ namespace Capstone.Views
         /// </summary>
         /// <param name="choice">"Key" of the user's menu selection</param>
         /// <returns></returns>
-        protected override bool ExecuteSelection(string selection)
+        protected override bool ExecuteSelection(string Selection)
         {
+            List<Park> parks = parkSqlDAO.GetParks();
+            int parkId = 0;
+
+            if (Selection != "q" || Selection != "Q")
+            {
+                parkId = int.Parse(Selection);
+                Console.Clear();
+                Console.WriteLine();
+                
+            }
             
 
-            switch (selection)
+            switch (parkId)
             {
-                case "1": // Do whatever option 1 is
-                    int i1 = GetInteger("Enter the first integer: ");
-                    int i2 = GetInteger("Enter the second integer: ");
-                    Console.WriteLine($"{i1} + {i2} = {i1+i2}");
+                
+                case 1: // Do whatever option 1 is
+                    Console.Clear();   
+                    ParkInfoMenu sm = new ParkInfoMenu();                 
+                    sm.PrintHeader(Selection);
                     Pause("Press enter to continue");
                     return true;    // Keep running the main menu
-                case "2": // Do whatever option 2 is
+                case 2: // Do whatever option 2 is
                     WriteError("Not yet implemented");
                     Pause("");
                     return true;    // Keep running the main menu
-                case "3": // Create and show the sub-menu
-                    SubMenu1 sm = new SubMenu1();
-                    sm.Run();
+                case 3: // Create and show the sub-menu
+                    ParkInfoMenu pm = new ParkInfoMenu();
+                    pm.Run();
                     return true;    // Keep running the main menu
             }
             return true;
@@ -79,8 +104,11 @@ namespace Capstone.Views
 
         private void PrintHeader()
         {
-            SetColor(ConsoleColor.Yellow);
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("My Program"));
+            int parkId = int.Parse(Selection);
+            List<Park> parks = parkSqlDAO.GetParks();
+            SetColor(ConsoleColor.Magenta);
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"National Parks"));
+            
             ResetColor();
         }
     }
