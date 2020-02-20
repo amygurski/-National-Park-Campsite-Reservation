@@ -16,18 +16,6 @@ namespace Capstone.Models
         public int AnnualVisitors { get; set; }
         public string Description { get; set; }
         public object ParksSqlDAO { get; private set; }
-
-        //public Park (int id, string name, string location, int establishDate, double area, int annualVisitors, string description)
-        //{
-        //    Id = id;
-        //    Name = name;
-        //    Location = location;
-        //    EstablishDate = establishDate;
-        //    Area = area;
-        //    AnnualVisitors = annualVisitors;
-        //    Description = description;
-        //}
-
  
     }
 }
