@@ -12,15 +12,18 @@ namespace Capstone.Views
     {
         // Store any private variables, including DAOs here....
         private string Selection = null;
+        protected IParkSqlDAO parkSqlDAO;
         private string connectionString;
+        private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public ParkInfoMenu(/** DAOs may be passed in... ***/) :
-            base("Sub-Menu 1")
+        public ParkInfoMenu(IParkSqlDAO parkSqlDAO, Park park) :
+            base("ParkInfoMenu")
         {
-            // Store any values or DAOs passed in....
+            this.parkSqlDAO = parkSqlDAO;
+            this.park = park;
         }
 
         protected override void SetMenuOptions()
@@ -42,11 +45,11 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
-                    WriteError("Not yet implemented");
+                     
                     Pause("");
                     return true;
                 case "2": // Do whatever option 2 is
-                    WriteError("Not yet implemented");
+                    
                     Pause("");
                     return false;
             }
@@ -55,7 +58,8 @@ namespace Capstone.Views
 
         protected override void BeforeDisplayMenu()
         {
-            PrintHeader(Selection);
+            PrintHeader(park);
+            
         }
 
         protected override void AfterDisplayMenu()
@@ -66,26 +70,22 @@ namespace Capstone.Views
             ResetColor();
         }
 
-        public void PrintHeader(string Selection)
+        public void PrintHeader(Park park)
         {
-            int parkId = int.Parse(Selection);
-            ParkSqlDAO pk = new ParkSqlDAO(connectionString);
-            List<Park> parks = pk.GetParks();
+            //int parkId = int.Parse(Selection);
+            //ParkSqlDAO pk = new ParkSqlDAO(connectionString);
+            // List<Park> parks = .GetParks();
             SetColor(ConsoleColor.Magenta);
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"{parks[parkId].Name}"));
-            Console.WriteLine($"Location:       {parks[parkId].Location}");
-            Console.WriteLine($"Established:    {parks[parkId].EstablishDate}");
-            Console.WriteLine($"Area:           {parks[parkId].Area}");
-            Console.WriteLine($"Annual Visitors:{parks[parkId].AnnualVisitors}");
-            Console.WriteLine($"{parks[parkId].Description}");
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"{park.Name}"));
+            Console.WriteLine($"Location:       {park.Location}");
+            Console.WriteLine($"Established:    {park.EstablishDate}");
+            Console.WriteLine($"Area:           {park.Area}");
+            Console.WriteLine($"Annual Visitors:{park.AnnualVisitors}");
+            Console.WriteLine($"{park.Description}");
             ResetColor();
         }
 
-        //public void ListParks(string Selection)
-        //{
-        //    int parkId = int.Parse(Selection);
-        //    List<Park> parks = ParkSqlDAO.GetParks();
-        //}
+      
 
     }
 }

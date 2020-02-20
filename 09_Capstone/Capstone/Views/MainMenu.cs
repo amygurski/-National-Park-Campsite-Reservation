@@ -12,7 +12,8 @@ namespace Capstone.Views
     {
         // DAOs - Interfaces to our data objects can be stored here...
         protected IParkSqlDAO parkSqlDAO;
-        //protected ICountryDAO countryDAO;
+        private string Selection = null;
+
 
         /// <summary>
         /// Constructor adds items to the top-level menu. YOu will likely have parameters for one or more DAO's here...
@@ -20,39 +21,53 @@ namespace Capstone.Views
         public MainMenu(IParkSqlDAO parkSqlDAO) : base("Main Menu")
         {
             this.parkSqlDAO = parkSqlDAO;
-            //this.countryDAO = countryDAO;
+
         }
 
-        private string Selection = null;
-        //private int ParkId = 0;
+
 
         protected override void SetMenuOptions()
         {
+
             List<Park> parks = parkSqlDAO.GetParks();
 
             Console.WriteLine($"Select a Park for Further Details: ");
 
             foreach (Park park in parks)
             {
-                Console.WriteLine($" {park.Id}. {park.Name}");
-            }
-            Console.WriteLine($"Please enter selection here: ");
-            Selection = Console.ReadLine();
-            int parkId = int.Parse(Selection);
-
-            if (parkId > parks.Count || parkId < 1)
-            {
-                Console.WriteLine($"Please enter valid selection:");
-                Selection = Console.ReadLine();
-                int parkId1 = int.Parse(Selection);
-            }
-            else
-            {
-            ExecuteSelection(Selection);
+                this.menuOptions.Add(park.Id.ToString(), park.Name);
 
             }
+            this.menuOptions.Add("Q", "Quit");
 
-            
+            //Console.WriteLine($"Please enter selection here: ");
+            //Selection = Console.ReadLine();
+
+            //int parkId = 0;
+
+            //if (Selection != "q" || Selection != "Q")
+            //{
+            //    parkId = int.Parse(Selection);
+            //} 
+            //else
+            //{
+            //this.quitKey = "q";
+            //}
+
+            //if (parkId > parks.Count || parkId < 1)
+            //{
+            //    Console.WriteLine($"Please enter valid selection:");
+            //    Selection = Console.ReadLine();
+            //    parkId = int.Parse(Selection);
+            //}
+            //else
+            //{
+            //ExecuteSelection(Selection);
+
+            //}
+
+
+
         }
 
         /// <summary>
@@ -65,34 +80,45 @@ namespace Capstone.Views
         {
             List<Park> parks = parkSqlDAO.GetParks();
             int parkId = 0;
+            parkId = int.Parse(Selection);
 
-            if (Selection != "q" || Selection != "Q")
-            {
-                parkId = int.Parse(Selection);
-                Console.Clear();
-                Console.WriteLine();
-                
-            }
-            
+            Console.Clear();
 
-            switch (parkId)
+            Park park = null;
+            foreach(Park p in parks)
             {
-                
-                case 1: // Do whatever option 1 is
-                    Console.Clear();   
-                    ParkInfoMenu sm = new ParkInfoMenu();                 
-                    sm.PrintHeader(Selection);
-                    Pause("Press enter to continue");
-                    return true;    // Keep running the main menu
-                case 2: // Do whatever option 2 is
-                    WriteError("Not yet implemented");
-                    Pause("");
-                    return true;    // Keep running the main menu
-                case 3: // Create and show the sub-menu
-                    ParkInfoMenu pm = new ParkInfoMenu();
-                    pm.Run();
-                    return true;    // Keep running the main menu
+                if (p.Id == parkId)
+                {
+                    park = p;
+                    break;
+                }
             }
+
+            ParkInfoMenu sm = new ParkInfoMenu(parkSqlDAO, park);
+            sm.Run();
+
+            //switch (parkId)
+            //{
+
+            //    case 1: // Do whatever option 1 is
+            //        Console.Clear();   
+            //        ParkInfoMenu sm = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        sm.Run();
+            //        Pause("Press enter to continue");
+            //        return true;    // Keep running the main menu
+            //    case 2: // Do whatever option 2 is
+            //        Console.Clear();
+            //        ParkInfoMenu sm1 = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        sm1.Run();
+            //        Pause("Press enter to continue");
+            //        return true;    // Keep running the main menu
+            //    case 3: // Create and show the sub-menu
+            //        Console.Clear();
+            //        ParkInfoMenu sm2 = new ParkInfoMenu(parkSqlDAO, parks[parkId - 1]);
+            //        sm2.Run();
+            //        Pause("Press enter to continue");
+            //        return true;    // Keep running the main menu
+            //}
             return true;
         }
 
@@ -104,11 +130,10 @@ namespace Capstone.Views
 
         private void PrintHeader()
         {
-            int parkId = int.Parse(Selection);
-            List<Park> parks = parkSqlDAO.GetParks();
+
             SetColor(ConsoleColor.Magenta);
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"National Parks"));
-            
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render("National Parks"));
+
             ResetColor();
         }
     }

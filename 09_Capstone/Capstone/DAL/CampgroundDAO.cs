@@ -43,6 +43,7 @@ namespace Capstone.DAL
             catch (SqlException ex)
             {
                 // TODO: Catch CampgroundDAO Exceptions
+                throw;
             }
 
             return list;
