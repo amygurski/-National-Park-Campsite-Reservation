@@ -23,5 +23,16 @@ namespace Capstone.Tests
             Assert.AreEqual(4, sites.Count); //assert
             CleanupDatabase(); //reset database
         }
+
+        [TestMethod]
+        public void GetTop5AvailableSitesTests()
+        {
+            //int campgroundId, DateTime arrivalDate, DateTime departureDate
+            SetupDatabase(); //Setup data
+            SiteDAO dao = new SiteDAO(connectionString); //arrange
+            IList<Site> sites = dao.GetTop5AvailableSites(2, Convert.ToDateTime("2020-02-20"), Convert.ToDateTime("2020-02-20")); //act
+            Assert.AreEqual(4, sites.Count); //assert
+            CleanupDatabase(); //reset database
+        }
     }
 }

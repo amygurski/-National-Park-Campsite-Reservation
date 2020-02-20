@@ -73,14 +73,5 @@ namespace Capstone.DAL
 
             return reservation;
         }
-
-        public bool IsReservationAvailable(int campground, DateTime arrivalDate, DateTime departureDate)
-        {
-
-            return true;
-
-        }
-
-        
     }
 }
