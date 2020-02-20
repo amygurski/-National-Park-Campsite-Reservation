@@ -58,7 +58,7 @@ namespace Capstone.DAL
                 Name = Convert.ToString(rdr["name"]),
                 OpenMonths = Convert.ToInt32(rdr["open_from_mm"]),
                 ClosedMonths = Convert.ToInt32(rdr["open_to_mm"]),
-                DailyFee = Convert.ToDecimal(rdr["daily_fee_mm"])
+                DailyFee = Convert.ToDecimal(rdr["daily_fee"])
             };
 
             return campground;

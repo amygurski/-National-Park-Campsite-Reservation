@@ -16,9 +16,9 @@ namespace Capstone.Tests
         private string connectionString = "Server=.\\SqlExpress;Database=npcampground;Trusted_Connection=True;";
 
         [TestInitialize]
-        public int SetupDatabase(string sqlId)
+        public void SetupDatabase()
         {
-            int key = 0;
+            
 
             // Start a transaction, so we can roll back when we are finished with this test
             transaction = new TransactionScope();
@@ -39,13 +39,15 @@ namespace Capstone.Tests
                 SqlDataReader rdr = cmd.ExecuteReader();
 
                 // Get the result and save it for use later in a test.
+
                 if (rdr.Read())
                 {
-                    key = Convert.ToInt32(rdr[sqlId]);
+                    int newCampgroundId = Convert.ToInt32(rdr["newCampgroundId"]);
+                    int newParkId = Convert.ToInt32(rdr["newParkId"]);
+                    int newSiteId = Convert.ToInt32(rdr["newSiteId"]);
+                    int newReservationId = Convert.ToInt32(rdr["newReservationId"]);
                 }
             }
-
-            return key;
         }
 
         [TestCleanup]
