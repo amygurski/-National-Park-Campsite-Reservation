@@ -72,9 +72,8 @@ namespace Capstone.Views
                 }
             }
 
-            ParkInfoMenu sm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, park);
+            ParkInfoMenu sm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
             sm.Run();
-
             
             return true;
         }
@@ -84,10 +83,8 @@ namespace Capstone.Views
             PrintHeader();
         }
 
-
         private void PrintHeader()
         {
-
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render("National Parks"));
 

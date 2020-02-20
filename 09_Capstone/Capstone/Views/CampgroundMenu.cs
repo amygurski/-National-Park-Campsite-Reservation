@@ -61,7 +61,7 @@ namespace Capstone.Views
                     string departure = Console.ReadLine();
                     DateTime departureDate = DateTime.Parse(departure);
 
-                    bool isAvailable = reservationDAO.IsReservationAvailable(campground, arrivalDate, departureDate);
+                    bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
                     if (!isAvailable)
                     {
                         Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
@@ -74,7 +74,7 @@ namespace Capstone.Views
                         List<Site> availableSites = siteDAO.GetSites();
                         foreach (Site site in availableSites)
                         {
-                            Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{site.IsAccessible} \t{site.MaxRVLength} \t{site.HasUtilities} \t{}");
+                            Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{site.IsAccessible} \t{site.MaxRVLength} \t{site.HasUtilities}");
                         }
                     }
 

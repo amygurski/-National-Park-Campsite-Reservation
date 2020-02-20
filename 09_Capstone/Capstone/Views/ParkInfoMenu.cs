@@ -15,18 +15,20 @@ namespace Capstone.Views
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
+        protected ISiteDAO siteDAO;
         private string connectionString;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public ParkInfoMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, Park park) :
+        public ParkInfoMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, ISiteDAO siteDAO, Park park) :
             base("ParkInfoMenu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
             this.reservationDAO = reservationDAO;
+            this.siteDAO = siteDAO;
             this.park = park;
         }
 
@@ -49,7 +51,7 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
-                    CampgroundMenu cg = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, park);
+                    CampgroundMenu cg = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
                     cg.Run();
                     return true;
                 case "2": // Do whatever option 2 is

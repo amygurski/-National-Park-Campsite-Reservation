@@ -12,8 +12,14 @@ namespace Capstone.Tests
 {
     public class TestInitCleanup
     {
+        //TODO: Unit tests pass individually, but not when run as a whole.
+
         private TransactionScope transaction = null;
         private string connectionString = "Server=.\\SqlExpress;Database=npcampground;Trusted_Connection=True;";
+        public int newCampgroundId;
+        public int newParkId;
+        public int newSiteId;
+        public int newReservationId;
 
         [TestInitialize]
         public void SetupDatabase()
@@ -42,10 +48,10 @@ namespace Capstone.Tests
 
                 if (rdr.Read())
                 {
-                    int newCampgroundId = Convert.ToInt32(rdr["newCampgroundId"]);
-                    int newParkId = Convert.ToInt32(rdr["newParkId"]);
-                    int newSiteId = Convert.ToInt32(rdr["newSiteId"]);
-                    int newReservationId = Convert.ToInt32(rdr["newReservationId"]);
+                    newCampgroundId = Convert.ToInt32(rdr["newCampgroundId"]);
+                    newParkId = Convert.ToInt32(rdr["newParkId"]);
+                    newSiteId = Convert.ToInt32(rdr["newSiteId"]);
+                    newReservationId = Convert.ToInt32(rdr["newReservationId"]);
                 }
             }
         }
