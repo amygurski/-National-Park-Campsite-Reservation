@@ -72,7 +72,7 @@ namespace Capstone.Views
                 }
             }
 
-            CampgroundMenu sm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, park);
+            ParkInfoMenu sm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, park);
             sm.Run();
 
             
