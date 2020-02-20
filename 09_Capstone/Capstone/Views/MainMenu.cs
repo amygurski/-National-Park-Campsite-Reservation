@@ -14,17 +14,19 @@ namespace Capstone.Views
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
+        protected ISiteDAO siteDAO;
         private string Selection = null;
 
 
         /// <summary>
         /// Constructor adds items to the top-level menu. YOu will likely have parameters for one or more DAO's here...
         /// </summary>
-        public MainMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO) : base("Main Menu")
+        public MainMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, ISiteDAO siteDAO) : base("Main Menu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
             this.reservationDAO = reservationDAO;
+            this.siteDAO = siteDAO;
         }
 
 
