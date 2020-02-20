@@ -15,18 +15,19 @@ namespace Capstone.Views
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
-        private string connectionString;
+        protected ISiteDAO siteDAO;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, Park park) :
+        public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, ISiteDAO siteDAO, Park park) :
             base("CamgroundMenu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
             this.reservationDAO = reservationDAO;
+            this.siteDAO = siteDAO;
             this.park = park;
         }
 
@@ -60,8 +61,22 @@ namespace Capstone.Views
                     string departure = Console.ReadLine();
                     DateTime departureDate = DateTime.Parse(departure);
 
-                    //ReservationDAO rv = new ReservationDAO(connectionString);
-                    reservationDAO.IsReservationAvailable(campground, arrivalDate, departureDate);
+                    bool isAvailable = reservationDAO.IsReservationAvailable(campground, arrivalDate, departureDate);
+                    if (!isAvailable)
+                    {
+                        Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Results Matching your Search Criteria");
+                        Console.WriteLine($"Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
+                        List<Site> availableSites = siteDAO.GetSites();
+                        foreach (Site site in availableSites)
+                        {
+                            Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{site.IsAccessible} \t{site.MaxRVLength} \t{site.HasUtilities} \t{}");
+                        }
+                    }
 
                     return true;
                 
@@ -104,7 +119,7 @@ namespace Capstone.Views
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($""));
             Console.WriteLine($"Search for Campground Reservation");
-            Console.WriteLine($"\t\tName \tOpen \tClose \tDaily Fee");
+            Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
                 Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee}");

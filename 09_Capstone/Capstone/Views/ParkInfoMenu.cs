@@ -49,12 +49,11 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
-                    //CampgroundDAO cg = new CampgroundDAO(connectionString);
-                    campgroundDAO.GetCampgrounds();                     
+                    CampgroundMenu cg = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, park);
+                    cg.Run();
                     return true;
                 case "2": // Do whatever option 2 is
-                    //ReservationDAO rv = new ReservationDAO(connectionString);
-                    reservationDAO.GetReservations();
+                    
                     return false;
             }
             return true;
