@@ -14,17 +14,19 @@ namespace Capstone.Views
         
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
+        protected IReservationDAO reservationDAO;
         private string connectionString;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, Park park) :
+        public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, Park park) :
             base("CamgroundMenu")
         {
             this.parkDAO = parkDAO;
             this.campgroundDAO = campgroundDAO;
+            this.reservationDAO = reservationDAO;
             this.park = park;
         }
 
@@ -58,8 +60,8 @@ namespace Capstone.Views
                     string departure = Console.ReadLine();
                     DateTime departureDate = DateTime.Parse(departure);
 
-                    ReservationDAO rv = new ReservationDAO(connectionString);
-                    rv.IsReservationAvailable(campground, arrivalDate, departureDate);
+                    //ReservationDAO rv = new ReservationDAO(connectionString);
+                    reservationDAO.IsReservationAvailable(campground, arrivalDate, departureDate);
 
                     return true;
                 
@@ -82,7 +84,7 @@ namespace Capstone.Views
 
         protected override void BeforeDisplayMenu()
         {
-            PrintHeader(park);
+            PrintHeader();
             
         }
 
@@ -96,16 +98,16 @@ namespace Capstone.Views
 
         public void PrintHeader()
         {
-            List<Campground> camps = new List<Campground>();
-            CampgroundDAO cg = new CampgroundDAO(connectionString);
-            cg.GetCampgrounds();
+            List<Campground> camps = campgroundDAO.GetCampgrounds();
+            
 
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($""));
             Console.WriteLine($"Search for Campground Reservation");
+            Console.WriteLine($"\t\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
-                Console.WriteLine($"{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths}");
+                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee}");
             }
             ResetColor();
         }

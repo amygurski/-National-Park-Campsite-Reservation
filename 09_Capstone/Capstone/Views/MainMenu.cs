@@ -15,7 +15,7 @@ namespace Capstone.Views
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
         protected ISiteDAO siteDAO;
-        private string Selection = null;
+        //private string Selection = null;
 
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Capstone.Views
                 }
             }
 
-            CampgroundMenu sm = new CampgroundMenu(parkDAO, campgroundDAO, park);
+            CampgroundMenu sm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, park);
             sm.Run();
 
             
