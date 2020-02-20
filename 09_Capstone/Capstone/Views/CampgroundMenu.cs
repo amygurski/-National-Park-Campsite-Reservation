@@ -94,18 +94,19 @@ namespace Capstone.Views
             ResetColor();
         }
 
-        public void PrintHeader(Park park)
+        public void PrintHeader()
         {
+            List<Campground> camps = new List<Campground>();
             CampgroundDAO cg = new CampgroundDAO(connectionString);
             cg.GetCampgrounds();
 
             SetColor(ConsoleColor.Magenta);
-            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($"{park.Name}"));
-            Console.WriteLine($"Location:       {park.Location}");
-            Console.WriteLine($"Established:    {park.EstablishDate}");
-            Console.WriteLine($"Area:           {park.Area}");
-            Console.WriteLine($"Annual Visitors:{park.AnnualVisitors}");
-            Console.WriteLine($"{park.Description}");
+            Console.WriteLine(Figgle.FiggleFonts.Standard.Render($""));
+            Console.WriteLine($"Search for Campground Reservation");
+            foreach (Campground camp in camps)
+            {
+                Console.WriteLine($"{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths}");
+            }
             ResetColor();
         }
 
