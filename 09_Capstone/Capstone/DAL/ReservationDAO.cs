@@ -43,7 +43,8 @@ namespace Capstone.DAL
             }
             catch (SqlException ex)
             {
-                // TODO: Catch ReservationDAO Exceptions
+                // TODO: Add exception log
+                throw;
             }
 
             return list;
@@ -54,7 +55,7 @@ namespace Capstone.DAL
             Reservation reservation = new Reservation()
             {
                 ReservationId = Convert.ToInt32(rdr["reservation_id"]),
-                SiteId = Convert.ToInt32(rdr["campground_id"]),
+                SiteId = Convert.ToInt32(rdr["site_id"]),
                 Name = Convert.ToString(rdr["name"]),
                 FromDate = Convert.ToDateTime(rdr["from_date"]),
                 ToDate = Convert.ToDateTime(rdr["to_date"])

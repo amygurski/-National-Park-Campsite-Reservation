@@ -43,7 +43,8 @@ namespace Capstone.DAL
             }
             catch (SqlException ex)
             {
-                // TODO: Catch SiteDAO Exceptions
+                // TODO: Add exception log
+                throw;
             }
 
             return list;
