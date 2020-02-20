@@ -60,6 +60,8 @@ namespace Capstone.Views
                     Console.WriteLine($"{menuItem.Key} - {menuItem.Value}");
                 }
 
+                
+
                 AfterDisplayMenu();
 
                 string choice = GetString("Selection:").ToUpper();
