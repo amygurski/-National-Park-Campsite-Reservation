@@ -11,18 +11,20 @@ namespace Capstone.Views
     public class ParkInfoMenu : CLIMenu
     {
         // Store any private variables, including DAOs here....
-        private string Selection = null;
-        protected IParkSqlDAO parkSqlDAO;
+        
+        protected IParkDAO parkDAO;
+        protected ICampgroundDAO campgroundDAO;
         private string connectionString;
         private Park park;
 
         /// <summary>
         /// Constructor adds items to the top-level menu
         /// </summary>
-        public ParkInfoMenu(IParkSqlDAO parkSqlDAO, Park park) :
+        public ParkInfoMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, Park park) :
             base("ParkInfoMenu")
         {
-            this.parkSqlDAO = parkSqlDAO;
+            this.parkDAO = parkDAO;
+            this.campgroundDAO = campgroundDAO;
             this.park = park;
         }
 
@@ -45,7 +47,8 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1": // Do whatever option 1 is
-                     
+                    CampgroundDAO cg = new CampgroundDAO(connectionString);
+                    cg.GetCampgrounds(); 
                     Pause("");
                     return true;
                 case "2": // Do whatever option 2 is
@@ -55,6 +58,19 @@ namespace Capstone.Views
             }
             return true;
         }
+
+        //private void ViewCampgrounds()
+        //{
+        //    try
+        //    {
+        //        // get the cg
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("There was a problem gettng campgrounds. Please try again later and it will fail then also");
+        //        Pause("Press enter to continue");
+        //    }
+        //}
 
         protected override void BeforeDisplayMenu()
         {
