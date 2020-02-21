@@ -36,7 +36,7 @@ namespace Capstone.Views
             this.menuOptions.Add("1", "View Campgrounds");
             //this.menuOptions.Add("2", "Search for Reservation");
             this.menuOptions.Add("B", "Back to Main Menu");
-            this.quitKey = "B";
+            
         }
 
         /// <summary>
@@ -53,8 +53,9 @@ namespace Capstone.Views
                     CampgroundMenu cg = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
                     cg.Run();
                     return true;
-                case "2": // Do whatever option 2 is
-                    
+                case "b": // Do whatever option 2 is
+                    MainMenu mm = new MainMenu();
+                    mm.Run();
                     return false;
             }
             return true;

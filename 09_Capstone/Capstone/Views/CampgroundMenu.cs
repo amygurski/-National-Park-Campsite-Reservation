@@ -35,7 +35,7 @@ namespace Capstone.Views
         {
             this.menuOptions.Add("1", "Search for Available Reservations");
             this.menuOptions.Add("2", "Return to Previous Screen");
-            this.quitKey = "2";
+            
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Capstone.Views
 
                 foreach (Site site in availableSites)
                 {
-                    Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.DailyFee:C}");
+                    Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.TotalStayCost(arrivalDate, departureDate):C}");
                 }
                 Console.WriteLine($"Which site whould be reserved (enter 0 to cancel)?");
                 string response = Console.ReadLine();
