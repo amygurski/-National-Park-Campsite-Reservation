@@ -17,11 +17,9 @@ namespace Capstone.Tests
         [TestMethod]
         public void GetCampgroundsTests()
         {
-            SetupDatabase(); //Setup data
             CampgroundDAO dao = new CampgroundDAO(connectionString); //arrange
             IList<Campground> campgrounds = dao.GetCampgrounds(); //act
             Assert.AreEqual(1, campgrounds.Count); //assert
-            CleanupDatabase(); //reset database
         }
     }
 }

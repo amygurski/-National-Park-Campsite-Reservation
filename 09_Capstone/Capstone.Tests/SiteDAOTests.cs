@@ -17,18 +17,14 @@ namespace Capstone.Tests
         [TestMethod]
         public void GetSitesTests()
         {
-            SetupDatabase(); //Setup data
             SiteDAO dao = new SiteDAO(connectionString); //arrange
             IList<Site> sites = dao.GetSites(); //act
             Assert.AreEqual(4, sites.Count); //assert
-            CleanupDatabase(); //reset database
         }
 
         [TestMethod]
         public void GetTop5AvailableSitesTests()
         {
-            //int campgroundId, DateTime arrivalDate, DateTime departureDate
-            SetupDatabase(); //Setup data
             SiteDAO dao = new SiteDAO(connectionString); //arrange
 
             //Date conflict
@@ -38,15 +34,12 @@ namespace Capstone.Tests
             //Available date
             sites = dao.GetTop5AvailableSites(newCampgroundId, Convert.ToDateTime("2021/01/01"), Convert.ToDateTime("2021/05/01")); //act
             Assert.AreEqual(1, sites.Count); //assert
-
-            CleanupDatabase(); //reset database
         }
 
         [TestMethod]
         public void HasAvailableSitesTests()
         {
             //int campgroundId, DateTime arrivalDate, DateTime departureDate
-            SetupDatabase(); //Setup data
             SiteDAO dao = new SiteDAO(connectionString); //arrange
 
             //Site is not available
@@ -56,8 +49,6 @@ namespace Capstone.Tests
             //Site is available
             isAvailable = dao.HasAvailableSites(newCampgroundId, Convert.ToDateTime("2021/01/01"), Convert.ToDateTime("2021/05/01")); //act
             Assert.IsTrue(isAvailable);
-
-            CleanupDatabase(); //reset database
         }
     }
 }

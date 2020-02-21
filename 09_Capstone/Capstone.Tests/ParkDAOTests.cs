@@ -17,11 +17,9 @@ namespace Capstone.Tests
         [TestMethod]
         public void GetParksTests()
         {
-            SetupDatabase(); //Setup data
             ParkDAO dao = new ParkDAO(connectionString); //arrange
             IList<Park> parks = dao.GetParks(); //act
             Assert.AreEqual(1, parks.Count); //assert
-            CleanupDatabase(); //reset database
         }
     }
 }

@@ -17,11 +17,9 @@ namespace Capstone.Tests
         [TestMethod]
         public void GetReservationsTests()
         {
-            SetupDatabase(); //Setup data
             ReservationDAO dao = new ReservationDAO(connectionString); //arrange
             IList<Reservation> reservations = dao.GetReservations(); //act
             Assert.AreEqual(1, reservations.Count); //assert
-            CleanupDatabase(); //reset database
         }
     }
 }
