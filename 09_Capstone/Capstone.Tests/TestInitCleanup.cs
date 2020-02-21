@@ -12,7 +12,6 @@ namespace Capstone.Tests
 {
     public class TestInitCleanup
     {
-        //TODO: Unit tests pass individually, but not when run as a whole.
 
         private TransactionScope transaction = null;
         private string connectionString = "Server=.\\SqlExpress;Database=npcampground;Trusted_Connection=True;";

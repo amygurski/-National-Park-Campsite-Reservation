@@ -59,6 +59,7 @@ namespace Capstone.Views
                         return true;
                     }
 
+                    //TODO: Ensure user enters valid date
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
                     string arrival = Console.ReadLine();
                     DateTime arrivalDate = DateTime.Parse(arrival);
@@ -81,6 +82,7 @@ namespace Capstone.Views
 
         private void ShowReservationResults(int campground, DateTime arrivalDate, DateTime departureDate)
         {
+            //TODO: Add bonus criteria to not allow user to book in off-season (have method IsCampgroundOpen, need to integrate into CLI)
             bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
             if (!isAvailable)
             {
@@ -110,7 +112,7 @@ namespace Capstone.Views
                     }
                 }
                 
-
+                //TODO: Fix spacing on Site view CLI
                 foreach (Site site in availableSites)
                 {
                     Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.TotalStayCost(arrivalDate, departureDate):C}");
@@ -224,14 +226,15 @@ namespace Capstone.Views
         public void PrintHeader()
         {
             List<Campground> camps = campgroundDAO.GetCampgrounds();
-            
 
+            //TODO: Fix spacing on camground CLI
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($""));
             Console.WriteLine($"Search for Campground Reservation");
             Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
+                //TODO: Display month instead of integer for Open and Closed Month
                 Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee:C}");
             }
             ResetColor();
