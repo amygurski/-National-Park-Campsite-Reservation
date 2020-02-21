@@ -26,6 +26,24 @@ namespace Capstone.Models
         {
             return this.DailyFee * Convert.ToDecimal((departureDate - arrivalDate).TotalDays);
         }
+
+        /// <summary>
+        /// Checks if the campground is open (in-season)
+        /// </summary>
+        /// <param name="arrivalDate"></param>
+        /// <param name="departureDate"></param>
+        /// <returns>True if the reservation request is in season</returns>
+        public bool IsCampgroundOpen(DateTime arrivalDate, DateTime departureDate)
+        {
+            if (arrivalDate.Month >= OpenMonths & departureDate.Month <= ClosedMonths)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }

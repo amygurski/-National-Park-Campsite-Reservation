@@ -15,7 +15,7 @@ namespace Capstone.Tests
         /// duration of the requested stay.
         /// </summary>
         [TestMethod]
-        public void TotalStayCost()
+        public void TotalStayCostTests()
         {
             //Arrange
             Campground campground = new Campground()
@@ -33,6 +33,32 @@ namespace Capstone.Tests
 
             //Assert
             Assert.AreEqual(180.0M, actualResult);
+        }
+
+        [TestMethod]
+        public void IsCampgroundOpenTests()
+        {
+            //Arrange
+            Campground campground = new Campground()
+            {
+                Id = 1,
+                ParkId = 1,
+                Name = "Testing",
+                OpenMonths = 6,
+                ClosedMonths = 8,
+                DailyFee = 30.00M
+            };
+
+            //Act and Assert - For open
+            Assert.IsTrue(campground.IsCampgroundOpen(Convert.ToDateTime("07/01/2020"), Convert.ToDateTime("07/30/2020")));
+            Assert.IsTrue(campground.IsCampgroundOpen(Convert.ToDateTime("06/01/2020"), Convert.ToDateTime("08/31/2020")));
+
+            //Act and Assert = For closed
+            Assert.IsFalse(campground.IsCampgroundOpen(Convert.ToDateTime("01/01/2020"), Convert.ToDateTime("05/30/2020")));
+            Assert.IsFalse(campground.IsCampgroundOpen(Convert.ToDateTime("01/01/2020"), Convert.ToDateTime("08/31/2020")));
+            Assert.IsFalse(campground.IsCampgroundOpen(Convert.ToDateTime("08/31/2020"), Convert.ToDateTime("10/30/2020")));
+
+
         }
     }
 }
