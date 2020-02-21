@@ -54,7 +54,7 @@ namespace Capstone.Views
                     cg.Run();
                     return true;
                 case "b": // Do whatever option 2 is
-                    MainMenu mm = new MainMenu();
+                    MainMenu mm = new MainMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO);
                     mm.Run();
                     return false;
             }
