@@ -16,7 +16,7 @@ VALUES (@newParkId, 'Hayfield', 1, 12, 25.00);
 
 DECLARE @newCampgroundId int = @@IDENTITY;
 
--- Insert a fake site
+-- Insert fake sites
 INSERT INTO site (site_number, campground_id) VALUES (1, @newCampgroundId);
 INSERT INTO site (site_number, campground_id, utilities) VALUES (2, @newCampgroundId, 1);
 INSERT INTO site (site_number, campground_id, accessible) VALUES (3, @newCampgroundId, 1);
@@ -25,7 +25,7 @@ INSERT INTO site (site_number, campground_id, accessible, utilities) VALUES (4, 
 DECLARE @newSiteId int = @@IDENTITY;
 
 -- Assign the fake reservation
-INSERT INTO reservation (site_id, name, from_date, to_date) VALUES ( @newSiteId, 'McClung Family Reservation', GETDATE()-2, GETDATE()+2);
+INSERT INTO reservation (site_id, name, from_date, to_date) VALUES ( @newSiteId, 'Okey Family Reservation', GETDATE()-2, GETDATE()+2);
 
 DECLARE @newReservationId int = @@IDENTITY;
 
