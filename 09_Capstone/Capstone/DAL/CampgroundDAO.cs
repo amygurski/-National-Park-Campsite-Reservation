@@ -15,6 +15,10 @@ namespace Capstone.DAL
             this.connectionString = connString;
         }
 
+        /// <summary>
+        /// Gets all Campgrounds from table
+        /// </summary>
+        /// <returns>Campground list</returns>
         public List<Campground> GetCampgrounds()
         {
             List<Campground> list = new List<Campground>();
@@ -49,6 +53,11 @@ namespace Capstone.DAL
             return list;
         }
 
+        /// <summary>
+        /// Creates the Campground object from the data row
+        /// </summary>
+        /// <param name="rdr">data row</param>
+        /// <returns>Campground object</returns>
         private static Campground RowToObject(SqlDataReader rdr)
         {
 

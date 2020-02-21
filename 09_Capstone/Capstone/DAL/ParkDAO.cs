@@ -15,6 +15,10 @@ namespace Capstone.DAL
             this.connectionString = connString;
         }
 
+        /// <summary>
+        /// Gets all parks from table sorted alphabetically by name
+        /// </summary>
+        /// <returns>Park list</returns>
         public List<Park> GetParks()
         {
             List<Park> list = new List<Park>();
@@ -51,6 +55,11 @@ namespace Capstone.DAL
             return list;
         }
 
+        /// <summary>
+        /// Creates the Park object from the data row
+        /// </summary>
+        /// <param name="rdr">data row</param>
+        /// <returns>Park object</returns>
         private static Park RowToObject(SqlDataReader rdr)
         {
             Park park = new Park()

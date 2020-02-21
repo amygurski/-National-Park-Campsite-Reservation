@@ -15,6 +15,10 @@ namespace Capstone.DAL
             this.connectionString = connString;
         }
 
+        /// <summary>
+        /// Gets all sites from table
+        /// </summary>
+        /// <returns>Site list</returns>
         public List<Site> GetSites()
         {
             List<Site> list = new List<Site>();
@@ -110,6 +114,11 @@ namespace Capstone.DAL
             }
         }
 
+        /// <summary>
+        /// Creates the Site object from the data row
+        /// </summary>
+        /// <param name="rdr">data row</param>
+        /// <returns>Site object</returns>
         private static Site RowToObject(SqlDataReader rdr)
         {
             Site site = new Site()

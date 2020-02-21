@@ -15,6 +15,10 @@ namespace Capstone.DAL
             this.connectionString = connString;
         }
 
+        /// <summary>
+        /// Gets all reservations from table
+        /// </summary>
+        /// <returns>Reservation list</returns>
         public List<Reservation> GetReservations()
         {
             List<Reservation> list = new List<Reservation>();
@@ -50,7 +54,48 @@ namespace Capstone.DAL
             return list;
         }
 
+        /// <summary>
+        /// Books a new reservation.
+        /// </summary>
+        /// <param name="newReservation">The reservation object.</param>
+        /// <returns>The id of the new reservation (if successful).</returns>
+        public int AddReservation(Reservation newReservation)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
 
+                    string sql = "INSERT reservation (site_id, name, from_date, to_date, create_date) VALUES (@site_id, @name, @from_date, @to_date, @create_date); SELECT @@identity";
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+
+                    cmd.Parameters.AddWithValue("@site_id", newReservation.SiteId);
+                    cmd.Parameters.AddWithValue("@name", newReservation.Name);
+                    cmd.Parameters.AddWithValue("@from_date", newReservation.FromDate);
+                    cmd.Parameters.AddWithValue("@to_date", newReservation.ToDate);
+                    cmd.Parameters.AddWithValue("@create_date", newReservation.CreateDate);
+
+                    int result = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    return result;
+                }
+            }
+            catch (SqlException ex)
+            {
+                // TODO: Add exception log
+                throw;
+            }
+
+            return 0;
+
+        }
+
+        /// <summary>
+        /// Creates the Reservation object from the data row
+        /// </summary>
+        /// <param name="rdr">data row</param>
+        /// <returns>Reservation object</returns>
         private static Reservation RowToObject(SqlDataReader rdr)
         {
             Reservation reservation = new Reservation()
