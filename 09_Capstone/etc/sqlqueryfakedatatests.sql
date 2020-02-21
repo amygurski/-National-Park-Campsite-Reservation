@@ -34,7 +34,7 @@ DECLARE @newReservationId int = @@IDENTITY;
 -- Return the ids of the fake items
 SELECT @newParkId as newParkId, @newCampgroundId as newCampgroundId, @newSiteId as newSiteId, @newReservationId as newReservationId
 
-SELECT * FROM park;
+SELECT * FROM park ORDER BY name ASC;
 SELECT * FROM campground;
 SELECT * FROM site;
 SELECT * FROM reservation;
