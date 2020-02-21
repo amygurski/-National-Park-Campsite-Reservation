@@ -53,18 +53,11 @@ namespace Capstone.Views
                     CampgroundMenu cg = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
                     cg.Run();
                     return true;
-<<<<<<< HEAD
-                //case "b": // Do whatever option 2 is
-                //    //MainMenu mm = new MainMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO);
-                //    //mm.Run();
-                //    return false;
-=======
                 case "b": // Do whatever option 2 is
                     //TODO: Park info menu not going back to main menu
                     MainMenu mm = new MainMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO);
                     mm.Run();
                     return false;
->>>>>>> edf7a128de098f11245055b1277709249d95dd24
             }
             return true;
         }
