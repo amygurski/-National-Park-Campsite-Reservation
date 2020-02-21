@@ -124,10 +124,25 @@ namespace Capstone.Views
                 Console.WriteLine($"What name should the reservation be made under?");
                 string reservationName = Console.ReadLine();
 
+                int reservationId = reservationDAO.AddReservation(NewReservation(campsite, reservationName, arrivalDate, departureDate));
 
-                Console.WriteLine($"The reservation has been made and the confirmation id is .");
-
+                Console.WriteLine($"The reservation has been made and the confirmation id is {reservationId}. Thank you for booking with us!");
+                Console.WriteLine("Press ENTER to continue...");
+                this.quitKey = "Enter";
             }
+        }
+
+        private Reservation NewReservation(int siteId, string name, DateTime fromDate, DateTime toDate)
+        {
+            Reservation newReservation = new Reservation()
+            {
+                SiteId = siteId,
+                Name = name,
+                FromDate = fromDate,
+                ToDate = toDate,
+                CreateDate = DateTime.Today
+            };
+            return newReservation;
         }
 
         private string UtilitiesAvailable(List<Site> sites)
