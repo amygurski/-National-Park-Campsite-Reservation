@@ -34,7 +34,8 @@ namespace Capstone.Views
         protected override void SetMenuOptions()
         {
             this.menuOptions.Add("1", "Search for Available Reservations");
-            this.menuOptions.Add("2", "Return to Previous Screen");
+            this.menuOptions.Add("B", "Return to Previous Screen");
+            this.quitKey = "B";
             
         }
 
@@ -55,8 +56,7 @@ namespace Capstone.Views
 
                     if (campground == 0)
                     {
-                        CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                        cm.Run();
+                        return true;
                     }
 
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
@@ -70,10 +70,10 @@ namespace Capstone.Views
                     ShowReservationResults(campground, arrivalDate, departureDate);
                     
                     return true;
-                case "2":
-                    ParkInfoMenu pm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                    pm.Run();
-                    return false;
+                //case "2":
+                //    ParkInfoMenu pm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
+                //    pm.Run();
+                //    return false;
                 
             }
             return true;
@@ -120,8 +120,9 @@ namespace Capstone.Views
                 int campsite = int.Parse(response);
                 if (campsite == 0)
                 {
-                    CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                    cm.Run();
+                    //CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
+                    //cm.Run();
+                    return;
                 }
                 
 
