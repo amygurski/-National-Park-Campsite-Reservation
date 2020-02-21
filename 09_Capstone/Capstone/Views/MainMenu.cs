@@ -36,7 +36,7 @@ namespace Capstone.Views
 
             List<Park> parks = parkDAO.GetParks();
 
-            Console.WriteLine($"Select a Park for Further Details: ");
+            
 
             foreach (Park park in parks)
             {

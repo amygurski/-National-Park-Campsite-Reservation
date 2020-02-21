@@ -52,7 +52,13 @@ namespace Capstone.Views
                     Console.WriteLine("Which campground (enter 0 to cancel): ");
                     string response =  Console.ReadLine();
                     int campground = int.Parse(response);
-                    
+
+                    if (campground == 0)
+                    {
+                        CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
+                        cm.Run();
+                    }
+
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
                     string arrival = Console.ReadLine();
                     DateTime arrivalDate = DateTime.Parse(arrival);
@@ -61,41 +67,121 @@ namespace Capstone.Views
                     string departure = Console.ReadLine();
                     DateTime departureDate = DateTime.Parse(departure);
 
-                    bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
-                    if (!isAvailable)
-                    {
-                        Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Results Matching your Search Criteria");
-                        Console.WriteLine($"Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
-                        List<Site> availableSites = siteDAO.GetSites();
-                        foreach (Site site in availableSites)
-                        {
-                            Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{site.IsAccessible} \t{site.MaxRVLength} \t{site.HasUtilities}");
-                        }
-                    }
-
+                    ShowReservationResults(campground, arrivalDate, departureDate);
+                    
                     return true;
                 
             }
             return true;
         }
 
-        //private void ViewCampgrounds()
-        //{
-        //    try
-        //    {
-        //        // get the cg
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("There was a problem gettng campgrounds. Please try again later and it will fail then also");
-        //        Pause("Press enter to continue");
-        //    }
-        //}
+        private void ShowReservationResults(int campground, DateTime arrivalDate, DateTime departureDate)
+        {
+            bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
+            if (!isAvailable)
+            {
+                Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
+
+            }
+            else
+            {
+                Console.WriteLine($"Results Matching your Search Criteria");
+                Console.WriteLine($"Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
+
+                List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
+
+                List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
+                Campground campground1 = new Campground();
+
+                foreach (Campground camp in campgrounds)
+                {
+                    if (campground == camp.Id)
+                    {
+                        campground1 = camp;
+                        break;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                
+
+                foreach (Site site in availableSites)
+                {
+                    Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.DailyFee:C}");
+                }
+                Console.WriteLine($"Which site whould be reserved (enter 0 to cancel)?");
+                string response = Console.ReadLine();
+                int campsite = int.Parse(response);
+                if (campsite == 0)
+                {
+                    CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
+                    cm.Run();
+                }
+                
+
+                Console.WriteLine($"What name should the reservation be made under?");
+                string reservationName = Console.ReadLine();
+
+
+                Console.WriteLine($"The reservation has been made and the confirmation id is .");
+
+            }
+        }
+
+        private string UtilitiesAvailable(List<Site> sites)
+        {
+            string utilitiesAvailable = null;
+            foreach (Site site in sites)
+            {
+                if (site.HasUtilities)
+                {
+                    utilitiesAvailable = "Yes";
+                }
+                else
+                {
+                    utilitiesAvailable = "N/A";
+                }
+            }
+
+            return utilitiesAvailable;
+        }
+        private string MaxRVLength(List<Site> sites)
+        {
+            string maxLength = null;
+            foreach (Site site in sites)
+            {
+                if (site.MaxRVLength > 0)
+                {
+                    maxLength = Convert.ToString(site.MaxRVLength);
+                }
+                else
+                {
+                    maxLength = "N/A";
+                }
+            }
+            return maxLength;
+        }
+
+        private string IsSiteAccessible(List<Site> sites)
+        {
+          string accessibility = null;
+          foreach (Site site in sites)
+            {
+                if (site.IsAccessible)
+                {
+                    accessibility = "Yes";
+                    
+                }
+                else
+                {
+                    accessibility = "No";
+                    
+                }
+            }
+            return accessibility;
+        }
 
         protected override void BeforeDisplayMenu()
         {
@@ -122,7 +208,7 @@ namespace Capstone.Views
             Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
-                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee}");
+                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee:C}");
             }
             ResetColor();
         }
