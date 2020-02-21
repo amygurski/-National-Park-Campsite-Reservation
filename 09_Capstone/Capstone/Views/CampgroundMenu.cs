@@ -70,6 +70,10 @@ namespace Capstone.Views
                     ShowReservationResults(campground, arrivalDate, departureDate);
                     
                     return true;
+                case "2":
+                    ParkInfoMenu pm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
+                    pm.Run();
+                    return false;
                 
             }
             return true;
@@ -86,7 +90,7 @@ namespace Capstone.Views
             else
             {
                 Console.WriteLine($"Results Matching your Search Criteria");
-                Console.WriteLine($"Site No. \tMax Occup. \tAccessible? \tMax RV Length \tUtility \tCost");
+                Console.WriteLine($"Site No. \t\tMax Occup. \t\tAccessible? \t\tMax RV Length \t\tUtility \t\tCost");
 
                 List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
 
@@ -128,9 +132,13 @@ namespace Capstone.Views
 
                 Console.WriteLine($"The reservation has been made and the confirmation id is {reservationId}. Thank you for booking with us!");
                 Console.WriteLine("Press ENTER to continue...");
-                this.quitKey = "Enter";
+                Console.ReadLine();
+
+                
             }
         }
+
+      
 
         private Reservation NewReservation(int siteId, string name, DateTime fromDate, DateTime toDate)
         {
@@ -204,13 +212,13 @@ namespace Capstone.Views
             
         }
 
-        protected override void AfterDisplayMenu()
-        {
-            base.AfterDisplayMenu();
-            SetColor(ConsoleColor.Cyan);
-            Console.WriteLine("Display some data here, AFTER the sub-menu is shown....");
-            ResetColor();
-        }
+        //protected override void AfterDisplayMenu()
+        //{
+        //    base.AfterDisplayMenu();
+        //    SetColor(ConsoleColor.Cyan);
+        //    Console.WriteLine("Display some data here, AFTER the sub-menu is shown....");
+        //    ResetColor();
+        //}
 
         public void PrintHeader()
         {

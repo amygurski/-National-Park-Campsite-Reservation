@@ -16,7 +16,6 @@ namespace Capstone.Views
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
         protected ISiteDAO siteDAO;
-        private string connectionString;
         private Park park;
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace Capstone.Views
         protected override void SetMenuOptions()
         {
             this.menuOptions.Add("1", "View Campgrounds");
-            this.menuOptions.Add("2", "Search for Reservation");
+            //this.menuOptions.Add("2", "Search for Reservation");
             this.menuOptions.Add("B", "Back to Main Menu");
             this.quitKey = "B";
         }
