@@ -50,6 +50,7 @@ namespace Capstone.DAL
             return list;
         }
 
+
         private static Reservation RowToObject(SqlDataReader rdr)
         {
             Reservation reservation = new Reservation()

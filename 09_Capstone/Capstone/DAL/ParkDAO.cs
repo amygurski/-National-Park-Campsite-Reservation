@@ -27,7 +27,7 @@ namespace Capstone.DAL
                     conn.Open();
 
                     // Create the command for the sql statement
-                    string sql = "Select * from park";
+                    string sql = "Select * from park ORDER BY name ASC";
                     SqlCommand cmd = new SqlCommand(sql, conn);
 
                     // Execute the query and get the result set in a reader
