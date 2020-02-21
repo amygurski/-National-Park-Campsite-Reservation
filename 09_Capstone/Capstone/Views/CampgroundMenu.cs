@@ -71,10 +71,7 @@ namespace Capstone.Views
                     ShowReservationResults(campground, arrivalDate, departureDate);
                     
                     return true;
-                //case "2":
-                //    ParkInfoMenu pm = new ParkInfoMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                //    pm.Run();
-                //    return false;
+                
                 
             }
             return true;
@@ -234,8 +231,8 @@ namespace Capstone.Views
             Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
-                //TODO: Display month instead of integer for Open and Closed Month
-                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.OpenMonths} \t{camp.ClosedMonths} \t{camp.DailyFee:C}");
+               
+                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.DisplayMonths(camp.OpenMonths)} \t{camp.DisplayMonths(camp.ClosedMonths)} \t{camp.DailyFee:C}");
             }
             ResetColor();
         }
