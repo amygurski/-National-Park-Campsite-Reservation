@@ -89,9 +89,10 @@ namespace Capstone.Views
             else
             {
                 Console.WriteLine($"Results Matching your Search Criteria");
-                Console.WriteLine($"Site No. \t\tMax Occup. \t\tAccessible? \t\tMax RV Length \t\tUtility \t\tCost");
+                //Console.WriteLine($"Site No. \t\tMax Occup. \t\tAccessible? \t\tMax RV Length \t\tUtility \t\tCost");
+                Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5}", "Site No.", "Max Occup.", "Accessible?", "Max RV Length", "Utility", "Cost");
 
-                List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
+                List <Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
 
                 List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
                 Campground campground1 = new Campground();
@@ -109,10 +110,10 @@ namespace Capstone.Views
                     }
                 }
                 
-                //TODO: Fix spacing on Site view CLI
                 foreach (Site site in availableSites)
                 {
-                    Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.TotalStayCost(arrivalDate, departureDate):C}");
+                    //Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.TotalStayCost(arrivalDate, departureDate):C}");
+                    Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5:C}", site.SiteId, site.MaxOccupancy, IsSiteAccessible(availableSites), MaxRVLength(availableSites), UtilitiesAvailable(availableSites), campground1.TotalStayCost(arrivalDate, departureDate));
                 }
                 Console.WriteLine($"Which site whould be reserved (enter 0 to cancel)?");
                 string response = Console.ReadLine();
@@ -224,15 +225,16 @@ namespace Capstone.Views
         {
             List<Campground> camps = campgroundDAO.GetCampgrounds();
 
-            //TODO: Fix spacing on camground CLI
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render($""));
             Console.WriteLine($"Search for Campground Reservation");
-            Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
+            Console.WriteLine(" {0, -5} {1,-35} {2,-10} {3,-10} {4,-10}", "", "Name", "Open", "Close", "Daily Fee");
+
+            //Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
-               
-                Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.DisplayMonths(camp.OpenMonths)} \t{camp.DisplayMonths(camp.ClosedMonths)} \t{camp.DailyFee:C}");
+                Console.WriteLine("#{0, -5} {1,-35} {2,-10} {3,-10} {4,-10:C}", camp.Id, camp.Name, camp.DisplayMonths(camp.OpenMonths), camp.DisplayMonths(camp.ClosedMonths),camp.DailyFee);
+                //Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.DisplayMonths(camp.OpenMonths)} \t{camp.DisplayMonths(camp.ClosedMonths)} \t{camp.DailyFee:C}");
             }
             ResetColor();
         }

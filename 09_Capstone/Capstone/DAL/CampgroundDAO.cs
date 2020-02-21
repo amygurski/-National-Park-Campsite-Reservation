@@ -46,7 +46,6 @@ namespace Capstone.DAL
             }
             catch (SqlException ex)
             {
-                // TODO: Add exception log
                 ErrorLog.LogError(ex);
                 throw;
             }

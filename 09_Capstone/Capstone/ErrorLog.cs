@@ -16,7 +16,7 @@ namespace Capstone
 
             using (StreamWriter sw = new StreamWriter(fullPath))
             {
-                sw.WriteLine(DateTime.UtcNow + ", " + ex);
+                sw.WriteLine(DateTime.Now + ", " + ex);
             }
         }
     }

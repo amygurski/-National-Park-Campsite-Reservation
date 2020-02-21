@@ -22,7 +22,6 @@ namespace Capstone.Tests
             Assert.AreEqual(4, sites.Count); //assert
         }
 
-        //TODO: Test failing now that changed method
         [TestMethod]
         public void GetTop5AvailableSitesTests()
         {
@@ -37,7 +36,6 @@ namespace Capstone.Tests
             Assert.AreEqual(4, sites.Count); //assert
         }
 
-        //ToDo: Test failing now that changed method
         [TestMethod]
         public void HasAvailableSitesTests()
         {
