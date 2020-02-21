@@ -65,14 +65,7 @@ namespace Capstone.DAL
 
                     conn.Open();
 
-                    // Create the command for the sql statement
-                    //string sql =
-                    //@"SELECT DISTINCT TOP 5 s.*
-                    //FROM site s 
-                    //JOIN reservation r ON s.site_id = r.site_id 
-                    //JOIN campground c ON s.campground_id = c.campground_id 
-                    //WHERE c.campground_id = @campgroundId
-                    //AND ((@arrivalDate NOT BETWEEN from_date AND to_date) AND (@departureDate NOT BETWEEN from_date AND to_date))";
+                  
 
                     string sql =
                     @"SELECT DISTINCT TOP 5 s.*
@@ -82,6 +75,8 @@ namespace Capstone.DAL
                     AND s.site_id NOT IN(SELECT site_id FROM reservation WHERE(@arrivalDate BETWEEN from_date AND to_date) OR from_date IS NULL)
                     AND s.site_id NOT IN(SELECT site_id FROM reservation WHERE(@departureDate BETWEEN from_date AND to_date) OR from_date IS NULL)
                     AND s.site_id NOT IN(SELECT site_id FROM reservation WHERE(from_date BETWEEN @arrivalDate AND @departureDate) OR from_date IS NULL)";
+
+
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
 

@@ -59,14 +59,37 @@ namespace Capstone.Views
                         return true;
                     }
 
-                    //TODO: Ensure user enters valid date
+                    
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
                     string arrival = Console.ReadLine();
-                    DateTime arrivalDate = DateTime.Parse(arrival);
+
+                    DateTime arrivalDate;
+                    if (DateTime.TryParse(arrival, out DateTime date))
+                    {
+                        arrivalDate = DateTime.Parse(arrival);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Date invalid. Press 'Enter' to continue...");
+                        Console.ReadLine();
+                        return true;
+                    }
+                    
 
                     Console.WriteLine("What is the departure date? (MM/DD/YYYY): ");
                     string departure = Console.ReadLine();
-                    DateTime departureDate = DateTime.Parse(departure);
+                    DateTime departureDate;
+
+                    if (DateTime.TryParse(departure, out DateTime date2))
+                    {
+                        departureDate = DateTime.Parse(departure);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Date invalid. Press 'Enter' to continue...");
+                        Console.ReadLine();
+                        return true;
+                    }
 
                     ShowReservationResults(campground, arrivalDate, departureDate);
                     
@@ -77,10 +100,43 @@ namespace Capstone.Views
             return true;
         }
 
+        //private bool GiveProperDate(string date)
+        //{
+            
+        //    DateTime arrivalDate = DateTime.Parse(date);
+        //    return false;
+        //}
         private void ShowReservationResults(int campground, DateTime arrivalDate, DateTime departureDate)
         {
-            //TODO: Add bonus criteria to not allow user to book in off-season (have method IsCampgroundOpen, need to integrate into CLI)
+                List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
+
+                List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
+                Campground campground1 = new Campground();
+            foreach (Campground camp in campgrounds)
+            {
+                if (campground == camp.Id)
+                {
+                    campground1 = camp;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+                
+                bool campgoundOpen = campground1.IsCampgroundOpen(arrivalDate, departureDate);
+
+            if (!campgoundOpen)
+            {
+                Console.WriteLine($"Campground is open between {campground1.DisplayMonths(campground1.OpenMonths)} and {campground1.DisplayMonths(campground1.ClosedMonths)}. Please choose a date range within that timeframe. Thank you!");
+                Console.WriteLine("Press enter to continue...");
+                Console.ReadLine();
+                return;
+            }
+            
             bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
+
             if (!isAvailable)
             {
                 Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
@@ -91,23 +147,8 @@ namespace Capstone.Views
                 Console.WriteLine($"Results Matching your Search Criteria");
                 Console.WriteLine($"Site No. \t\tMax Occup. \t\tAccessible? \t\tMax RV Length \t\tUtility \t\tCost");
 
-                List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
 
-                List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
-                Campground campground1 = new Campground();
 
-                foreach (Campground camp in campgrounds)
-                {
-                    if (campground == camp.Id)
-                    {
-                        campground1 = camp;
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
                 
                 //TODO: Fix spacing on Site view CLI
                 foreach (Site site in availableSites)
@@ -119,8 +160,7 @@ namespace Capstone.Views
                 int campsite = int.Parse(response);
                 if (campsite == 0)
                 {
-                    //CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                    //cm.Run();
+                    
                     return;
                 }
                 
