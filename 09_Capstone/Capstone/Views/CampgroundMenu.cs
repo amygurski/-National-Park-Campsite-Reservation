@@ -11,7 +11,7 @@ namespace Capstone.Views
     public class CampgroundMenu : CLIMenu
     {
         // Store any private variables, including DAOs here....
-        
+
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
@@ -36,7 +36,7 @@ namespace Capstone.Views
             this.menuOptions.Add("1", "Search for Available Reservations");
             this.menuOptions.Add("B", "Return to Previous Screen");
             this.quitKey = "B";
-            
+
         }
 
         /// <summary>
@@ -51,35 +51,83 @@ namespace Capstone.Views
             {
                 case "1": // Do whatever option 1 is
                     Console.WriteLine("Which campground (enter 0 to cancel): ");
-                    string response =  Console.ReadLine();
-                    int campground = int.Parse(response);
+                    string response = Console.ReadLine();
+                    int campground = 0;
 
-                    if (campground == 0)
+                    if (int.TryParse(response, out int result))
                     {
+                        campground = int.Parse(response);
+
+                        if (campground == 0)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Entry invalid. Please retry reservation. Thank you!");
                         return true;
                     }
 
-                    //TODO: Ensure user enters valid date
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
                     string arrival = Console.ReadLine();
-                    DateTime arrivalDate = DateTime.Parse(arrival);
+
+                    DateTime arrivalDate;
+                    if (DateTime.TryParse(arrival, out DateTime date))
+                    {
+                        arrivalDate = DateTime.Parse(arrival);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Date invalid. Press 'Enter' to continue...");
+                        Console.ReadLine();
+                        return true;
+                    }
+
 
                     Console.WriteLine("What is the departure date? (MM/DD/YYYY): ");
                     string departure = Console.ReadLine();
-                    DateTime departureDate = DateTime.Parse(departure);
+
+                    DateTime departureDate;
+
+                    if (DateTime.TryParse(departure, out DateTime date2))
+                    {
+                        departureDate = DateTime.Parse(departure);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Date invalid. Press 'Enter' to continue...");
+                        Console.ReadLine();
+                        return true;
+                    }
 
                     ShowReservationResults(campground, arrivalDate, departureDate);
-                    
+
                     return true;
-                
-                
+
+
             }
             return true;
         }
 
         private void ShowReservationResults(int campground, DateTime arrivalDate, DateTime departureDate)
         {
-            //TODO: Add bonus criteria to not allow user to book in off-season (have method IsCampgroundOpen, need to integrate into CLI)
+            List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
+
+            List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
+            Campground campground1 = new Campground();
+
+
+            bool campgoundOpen = campground1.IsCampgroundOpen(arrivalDate, departureDate);
+
+            if (!campgoundOpen)
+            {
+                Console.WriteLine($"Campground is open between {campground1.DisplayMonths(campground1.OpenMonths)} and {campground1.DisplayMonths(campground1.ClosedMonths)}. Please choose a date range within that timeframe. Thank you!");
+                Console.WriteLine("Press enter to continue...");
+                Console.ReadLine();
+                return;
+            }
+
             bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
             if (!isAvailable)
             {
@@ -89,13 +137,8 @@ namespace Capstone.Views
             else
             {
                 Console.WriteLine($"Results Matching your Search Criteria");
-                //Console.WriteLine($"Site No. \t\tMax Occup. \t\tAccessible? \t\tMax RV Length \t\tUtility \t\tCost");
                 Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5}", "Site No.", "Max Occup.", "Accessible?", "Max RV Length", "Utility", "Cost");
 
-                List <Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
-
-                List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
-                Campground campground1 = new Campground();
 
                 foreach (Campground camp in campgrounds)
                 {
@@ -109,10 +152,9 @@ namespace Capstone.Views
                         continue;
                     }
                 }
-                
+
                 foreach (Site site in availableSites)
                 {
-                    //Console.WriteLine($"{site.SiteId} \t{site.MaxOccupancy} \t{IsSiteAccessible(availableSites)} \t{MaxRVLength(availableSites)} \t{UtilitiesAvailable(availableSites)} \t{campground1.TotalStayCost(arrivalDate, departureDate):C}");
                     Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5:C}", site.SiteId, site.MaxOccupancy, IsSiteAccessible(availableSites), MaxRVLength(availableSites), UtilitiesAvailable(availableSites), campground1.TotalStayCost(arrivalDate, departureDate));
                 }
                 Console.WriteLine($"Which site whould be reserved (enter 0 to cancel)?");
@@ -120,11 +162,9 @@ namespace Capstone.Views
                 int campsite = int.Parse(response);
                 if (campsite == 0)
                 {
-                    //CampgroundMenu cm = new CampgroundMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO, park);
-                    //cm.Run();
                     return;
                 }
-                
+
 
                 Console.WriteLine($"What name should the reservation be made under?");
                 string reservationName = Console.ReadLine();
@@ -135,11 +175,11 @@ namespace Capstone.Views
                 Console.WriteLine("Press ENTER to continue...");
                 Console.ReadLine();
 
-                
+
             }
         }
 
-      
+
 
         private Reservation NewReservation(int siteId, string name, DateTime fromDate, DateTime toDate)
         {
@@ -190,18 +230,18 @@ namespace Capstone.Views
 
         private string IsSiteAccessible(List<Site> sites)
         {
-          string accessibility = null;
-          foreach (Site site in sites)
+            string accessibility = null;
+            foreach (Site site in sites)
             {
                 if (site.IsAccessible)
                 {
                     accessibility = "Yes";
-                    
+
                 }
                 else
                 {
                     accessibility = "No";
-                    
+
                 }
             }
             return accessibility;
@@ -210,16 +250,10 @@ namespace Capstone.Views
         protected override void BeforeDisplayMenu()
         {
             PrintHeader();
-            
+
         }
 
-        //protected override void AfterDisplayMenu()
-        //{
-        //    base.AfterDisplayMenu();
-        //    SetColor(ConsoleColor.Cyan);
-        //    Console.WriteLine("Display some data here, AFTER the sub-menu is shown....");
-        //    ResetColor();
-        //}
+        
 
         public void PrintHeader()
         {
@@ -230,16 +264,14 @@ namespace Capstone.Views
             Console.WriteLine($"Search for Campground Reservation");
             Console.WriteLine(" {0, -5} {1,-35} {2,-10} {3,-10} {4,-10}", "", "Name", "Open", "Close", "Daily Fee");
 
-            //Console.WriteLine($"\tName \tOpen \tClose \tDaily Fee");
             foreach (Campground camp in camps)
             {
-                Console.WriteLine("#{0, -5} {1,-35} {2,-10} {3,-10} {4,-10:C}", camp.Id, camp.Name, camp.DisplayMonths(camp.OpenMonths), camp.DisplayMonths(camp.ClosedMonths),camp.DailyFee);
-                //Console.WriteLine($"#{camp.Id} \t{camp.Name} \t{camp.DisplayMonths(camp.OpenMonths)} \t{camp.DisplayMonths(camp.ClosedMonths)} \t{camp.DailyFee:C}");
+                Console.WriteLine("#{0, -5} {1,-35} {2,-10} {3,-10} {4,-10:C}", camp.Id, camp.Name, camp.DisplayMonths(camp.OpenMonths), camp.DisplayMonths(camp.ClosedMonths), camp.DailyFee);
             }
             ResetColor();
         }
 
-      
+
 
     }
 }
