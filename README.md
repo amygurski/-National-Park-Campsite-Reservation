@@ -24,4 +24,4 @@ Build a command line driven application using C# and SQL that the National Park 
        b. A confirmation id is presented to the user once the reservation has been submitted.
 
 ### Data Sources 
-Your application will have access to a Relational Database populated with data. 
+The application had access to a Relational Database populated with data. 
