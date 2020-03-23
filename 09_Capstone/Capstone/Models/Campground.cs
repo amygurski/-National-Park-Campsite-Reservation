@@ -70,7 +70,7 @@ namespace Capstone.Models
         /// <returns>True if the reservation request is in season</returns>
         public bool IsCampgroundOpen(DateTime arrivalDate, DateTime departureDate)
         {
-            if (arrivalDate.Month >= OpenMonths & departureDate.Month <= ClosedMonths)
+            if (arrivalDate.Month >= this.OpenMonths & departureDate.Month <= this.ClosedMonths)
             {
                 return true;
             }

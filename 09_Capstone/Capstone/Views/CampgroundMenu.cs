@@ -6,12 +6,12 @@ using System.Collections.Generic;
 namespace Capstone.Views
 {
     /// <summary>
-    /// The top-level menu in our Market Application
+    /// Campground Menu is the list of campgrounds inside the selected park
+    /// The user can search for available reservations or return to the previous screen
     /// </summary>
     public class CampgroundMenu : CLIMenu
     {
-        // Store any private variables, including DAOs here....
-
+        // Variables including DAOs
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
@@ -19,7 +19,7 @@ namespace Capstone.Views
         private Park park;
 
         /// <summary>
-        /// Constructor adds items to the top-level menu
+        /// Constructor takes constructors and selected park
         /// </summary>
         public CampgroundMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, ISiteDAO siteDAO, Park park) :
             base("CamgroundMenu")
@@ -49,7 +49,7 @@ namespace Capstone.Views
         {
             switch (choice)
             {
-                case "1": // Do whatever option 1 is
+                case "1": //Select campground
                     Console.WriteLine("Which campground (enter 0 to cancel): ");
                     string response = Console.ReadLine();
                     int campground = 0;
@@ -63,33 +63,37 @@ namespace Capstone.Views
                             return true;
                         }
                     }
-                    else
+                    else //Prompt if invalid selection
                     {
                         Console.WriteLine($"Entry invalid. Please retry reservation. Thank you!");
                         return true;
                     }
 
+
+                    //Get arrival date
                     Console.WriteLine("What is the arrival date? (MM/DD/YYYY): ");
                     string arrival = Console.ReadLine();
 
                     DateTime arrivalDate;
-                    if (DateTime.TryParse(arrival, out DateTime date))
-                    {
-                        arrivalDate = DateTime.Parse(arrival);
-                    }
-                    else
+                    if (!DateTime.TryParse(arrival, out DateTime date))
                     {
                         Console.WriteLine($"Date invalid. Press 'Enter' to continue...");
                         Console.ReadLine();
                         return true;
                     }
+                    else
+                    {
+                        arrivalDate = DateTime.Parse(arrival);
+                    }
 
 
+                    //Get departure date
                     Console.WriteLine("What is the departure date? (MM/DD/YYYY): ");
                     string departure = Console.ReadLine();
 
                     DateTime departureDate;
 
+                    //TODO: Move to separate method rather than repeating code.
                     if (DateTime.TryParse(departure, out DateTime date2))
                     {
                         departureDate = DateTime.Parse(departure);
@@ -104,31 +108,36 @@ namespace Capstone.Views
                     ShowReservationResults(campground, arrivalDate, departureDate);
 
                     return true;
-
-
             }
             return true;
         }
 
-        private void ShowReservationResults(int campground, DateTime arrivalDate, DateTime departureDate)
+        /// <summary>
+        /// Shows 5 campsites available for the user to select and reserve.
+        /// Checks if the campground is open and if the dates.
+        /// Prompts if the site is fully reserved.
+        /// </summary>
+        /// <param name="campgroundId"></param>
+        /// <param name="arrivalDate"></param>
+        /// <param name="departureDate"></param>
+        private void ShowReservationResults(int campgroundId, DateTime arrivalDate, DateTime departureDate)
         {
-            List<Site> availableSites = siteDAO.GetTop5AvailableSites(campground, arrivalDate, departureDate);
+            List<Site> availableSites = siteDAO.GetTop5AvailableSites(campgroundId, arrivalDate, departureDate);
 
-            List<Campground> campgrounds = campgroundDAO.GetCampgrounds();
-            Campground campground1 = new Campground();
-
-
-            bool campgoundOpen = campground1.IsCampgroundOpen(arrivalDate, departureDate);
-
+            Campground campground = campgroundDAO.GetCampground(campgroundId);
+            
+            //Check that the selected campground is open for the requested dates (eg. no winter closures)
+            bool campgoundOpen = campground.IsCampgroundOpen(arrivalDate, departureDate);
             if (!campgoundOpen)
             {
-                Console.WriteLine($"Campground is open between {campground1.DisplayMonths(campground1.OpenMonths)} and {campground1.DisplayMonths(campground1.ClosedMonths)}. Please choose a date range within that timeframe. Thank you!");
+                Console.WriteLine($"Campground is open between {campground.DisplayMonths(campground.OpenMonths)} and {campground.DisplayMonths(campground.ClosedMonths)}. Please choose a date range within that timeframe. Thank you!");
                 Console.WriteLine("Press enter to continue...");
                 Console.ReadLine();
                 return;
             }
 
-            bool isAvailable = siteDAO.HasAvailableSites(campground, arrivalDate, departureDate);
+            // Check that sites are available in database
+            bool isAvailable = siteDAO.HasAvailableSites(campgroundId, arrivalDate, departureDate);
             if (!isAvailable)
             {
                 Console.WriteLine($"The date range preferred {arrivalDate}-{departureDate} is not available. Please make another selection.");
@@ -136,28 +145,19 @@ namespace Capstone.Views
             }
             else
             {
+                //Display 5 available sites with details
                 Console.WriteLine($"Results Matching your Search Criteria");
                 Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5}", "Site No.", "Max Occup.", "Accessible?", "Max RV Length", "Utility", "Cost");
 
 
-                foreach (Campground camp in campgrounds)
-                {
-                    if (campground == camp.Id)
-                    {
-                        campground1 = camp;
-                        break;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-
                 foreach (Site site in availableSites)
                 {
-                    Console.WriteLine("{0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5:C}", site.SiteId, site.MaxOccupancy, IsSiteAccessible(availableSites), MaxRVLength(availableSites), UtilitiesAvailable(availableSites), campground1.TotalStayCost(arrivalDate, departureDate));
+                    //TODO: The 3 methods IsSiteAccessible(site), MaxRVLength(site), UtilitiesAvailable(site) are just text formatting. I'd like to change these to simple ternary expressions
+                    Console.WriteLine(" {0, -10} {1,-10} {2,-15} {3,-15} {4,-10} {5,-5:C}", site.SiteId, site.MaxOccupancy, IsSiteAccessible(site), MaxRVLength(site), UtilitiesAvailable(site), campground.TotalStayCost(arrivalDate, departureDate));
                 }
-                Console.WriteLine($"Which site whould be reserved (enter 0 to cancel)?");
+
+                //User to choose a site to reserve
+                Console.WriteLine($" Which site whould be reserved (enter 0 to cancel)?");
                 string response = Console.ReadLine();
                 int campsite = int.Parse(response);
                 if (campsite == 0)
@@ -165,22 +165,28 @@ namespace Capstone.Views
                     return;
                 }
 
-
-                Console.WriteLine($"What name should the reservation be made under?");
+                //Get reservation details
+                Console.WriteLine($" What name should the reservation be made under?");
                 string reservationName = Console.ReadLine();
 
+                //Add reservation to database
                 int reservationId = reservationDAO.AddReservation(NewReservation(campsite, reservationName, arrivalDate, departureDate));
 
-                Console.WriteLine($"The reservation has been made and the confirmation id is {reservationId}. Thank you for booking with us!");
-                Console.WriteLine("Press ENTER to continue...");
+                //Let user know their reservation is confirmed
+                Console.WriteLine($" The reservation has been made and the confirmation id is {reservationId}. Thank you for booking with us!");
+                Console.WriteLine(" Press ENTER to continue...");
                 Console.ReadLine();
-
-
             }
         }
 
-
-
+        /// <summary>
+        /// Create a reservation for adding to database
+        /// </summary>
+        /// <param name="siteId"></param>
+        /// <param name="name"></param>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
         private Reservation NewReservation(int siteId, string name, DateTime fromDate, DateTime toDate)
         {
             Reservation newReservation = new Reservation()
@@ -194,11 +200,15 @@ namespace Capstone.Views
             return newReservation;
         }
 
-        private string UtilitiesAvailable(List<Site> sites)
+        /// <summary>
+        /// Change display for utilities to Yes or N/A
+        /// </summary>
+        /// <param name="sites"></param>
+        /// <returns>string of whether the site has utilities</returns>
+        private string UtilitiesAvailable(Site site)
         {
             string utilitiesAvailable = null;
-            foreach (Site site in sites)
-            {
+
                 if (site.HasUtilities)
                 {
                     utilitiesAvailable = "Yes";
@@ -207,15 +217,18 @@ namespace Capstone.Views
                 {
                     utilitiesAvailable = "N/A";
                 }
-            }
 
             return utilitiesAvailable;
         }
-        private string MaxRVLength(List<Site> sites)
+
+        /// <summary>
+        /// Change display for MaxRV Length to string or N/A
+        /// </summary>
+        /// <param name="sites"></param>
+        /// <returns>string of the max RV length allowed</returns>
+        private string MaxRVLength(Site site)
         {
             string maxLength = null;
-            foreach (Site site in sites)
-            {
                 if (site.MaxRVLength > 0)
                 {
                     maxLength = Convert.ToString(site.MaxRVLength);
@@ -224,37 +237,37 @@ namespace Capstone.Views
                 {
                     maxLength = "N/A";
                 }
-            }
             return maxLength;
         }
 
-        private string IsSiteAccessible(List<Site> sites)
+        /// <summary>
+        /// Change display for IsSiteAccessible to Yes or No
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns>string indicating Yes or No for site accessibility</returns>
+        private string IsSiteAccessible(Site site)
         {
             string accessibility = null;
-            foreach (Site site in sites)
-            {
                 if (site.IsAccessible)
                 {
                     accessibility = "Yes";
-
                 }
                 else
                 {
                     accessibility = "No";
-
                 }
-            }
             return accessibility;
         }
 
         protected override void BeforeDisplayMenu()
         {
             PrintHeader();
-
         }
 
         
-
+        /// <summary>
+        /// Display campground header
+        /// </summary>
         public void PrintHeader()
         {
             List<Campground> camps = campgroundDAO.GetCampgrounds();

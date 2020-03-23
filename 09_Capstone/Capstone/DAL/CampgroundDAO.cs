@@ -53,6 +53,38 @@ namespace Capstone.DAL
             return list;
         }
 
+        public Campground GetCampground(int id)
+        {
+            Campground campground = new Campground();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Create the command for the sql statement
+                    string sql = "Select * from campground where campground_id = @campground_id";
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@campground_id", id);
+                    // Execute the query and get the result set in a reader
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if(rdr.Read())
+                    {
+                        campground = RowToObject(rdr);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                ErrorLog.LogError(ex);
+                throw;
+            }
+
+            return campground;
+        }
+
         /// <summary>
         /// Creates the Campground object from the data row
         /// </summary>

@@ -16,23 +16,18 @@ namespace Capstone
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             IConfigurationRoot configuration = builder.Build();
-
             string connectionString = configuration.GetConnectionString("Project");
 
-            /********************************************************************
-            // If you do not want to use CLIMenu, you can remove the following
-            *********************************************************************/
-            // Create any DAOs needed here, and then pass them into main menu...
-
+            // DAOs to be passed to Main Menu
             IParkDAO parkDAO = new ParkDAO(connectionString);
             ICampgroundDAO campgroundDAO = new CampgroundDAO(connectionString);
             IReservationDAO reservationDAO = new ReservationDAO(connectionString);
             ISiteDAO siteDAO = new SiteDAO(connectionString);
+            
+            //Instantiate the main menu with the DAOs
+            MainMenu mainMenu = new MainMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO);
 
-
-            MainMenu mainMenu = new MainMenu(parkDAO, campgroundDAO, reservationDAO, siteDAO);  // You'll probably be adding daos to the constructor
-
-            // Run the menu.
+            // Run the menu
             mainMenu.Run();
         }
     }

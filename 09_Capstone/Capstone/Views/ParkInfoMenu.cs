@@ -6,12 +6,12 @@ using System.Collections.Generic;
 namespace Capstone.Views
 {
     /// <summary>
-    /// The top-level menu in our Market Application
+    /// The park info menu page displays the details of the selected National Park to the user
+    /// It has options to view campgrounds within the park or return to the main menu
     /// </summary>
     public class ParkInfoMenu : CLIMenu
     {
-        // Store any private variables, including DAOs here....
-        
+        // Variables including DAOs
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
@@ -19,7 +19,7 @@ namespace Capstone.Views
         private Park park;
 
         /// <summary>
-        /// Constructor adds items to the top-level menu
+        /// Constructor for ParkInfoMenu takes all the DAOs and the park selected from the Main menu 
         /// </summary>
         public ParkInfoMenu(IParkDAO parkDAO, ICampgroundDAO campgroundDAO, IReservationDAO reservationDAO, ISiteDAO siteDAO, Park park) :
             base("ParkInfoMenu")

@@ -6,16 +6,15 @@ using System.Collections.Generic;
 namespace Capstone.Views
 {
     /// <summary>
-    /// The top-level menu in our Market Application
+    /// The Main Menu displays the National Parks that are in our database
     /// </summary>
     public class MainMenu : CLIMenu
     {
-        // DAOs - Interfaces to our data objects can be stored here...
+        // DAOs - Interfaces to our data objects
         protected IParkDAO parkDAO;
         protected ICampgroundDAO campgroundDAO;
         protected IReservationDAO reservationDAO;
         protected ISiteDAO siteDAO;
-        //private string Selection = null;
 
 
         /// <summary>
@@ -30,22 +29,19 @@ namespace Capstone.Views
         }
 
 
-
+        /// <summary>
+        /// Sets menu options of List of parks
+        /// </summary>
         protected override void SetMenuOptions()
         {
-
             List<Park> parks = parkDAO.GetParks();
-
-            
 
             foreach (Park park in parks)
             {
                 this.menuOptions.Add(park.Id.ToString(), park.Name);
 
             }
-            this.menuOptions.Add("Q", "Quit");
-
-            
+            this.menuOptions.Add("Q", "Quit");   
         }
 
         /// <summary>
@@ -83,11 +79,13 @@ namespace Capstone.Views
             PrintHeader();
         }
 
+        /// <summary>
+        /// National Parks Header
+        /// </summary>
         private void PrintHeader()
         {
             SetColor(ConsoleColor.Magenta);
             Console.WriteLine(Figgle.FiggleFonts.Standard.Render("National Parks"));
-
             ResetColor();
         }
     }
