@@ -1,5 +1,31 @@
 # Module 2 Capstone - National Park Campsite Reservation
-Build a command line driven application using C# and SQL that the National Park Service can use to book campsite reservations.
+Build a command line driven application using C# and SQL that the National Park Service can use to book campsite reservations. The information about Parks, Campgrounds, Campsites, and Reservations come from a SQL database.
+
+## Screenshots of the application
+ ###  **Main Menu**
+ Displays parks
+
+![MainMenu](https://github.com/amygurski/National-Park-Campsite-Reservation/blob/master/img/MainMenu.PNG)
+
+ ###  **Park Menu**
+ Shows details about the selected park
+ 
+![ParkDetails](https://github.com/amygurski/National-Park-Campsite-Reservation/blob/master/img/Park.PNG)
+
+###  **Campgrounds**
+Shows campgrounds within Park
+
+![Campgrounds](https://github.com/amygurski/National-Park-Campsite-Reservation/blob/master/img/Campgrounds.PNG)
+
+###  **Site Details**
+Show Top 5 available sites in selected campground. Checks against the park's camping season and existing reservations in database.
+
+![AvailableSites](https://github.com/amygurski/National-Park-Campsite-Reservation/blob/master/img/AvailableSites.PNG)
+
+###  **Site Reserved**
+Confirms the reservations. It's added to the Reservation table in the database. 
+
+![BookSite](https://github.com/amygurski/National-Park-Campsite-Reservation/blob/master/img/BookSite.PNG)
 
 ### Requirements
 1. As a user of the system, I need the ability to view a list of the available parks in the system, sorted
